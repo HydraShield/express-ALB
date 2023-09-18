@@ -1,5 +1,4 @@
 const express = require("express")
-const User = require("./database/models/user")
 const os = require('os');
 
 const app = express()

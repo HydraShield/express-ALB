@@ -66,3 +66,21 @@ resources:
         SecurityGroupIngress:
           - CidrIp: 0.0.0.0/0
             IpProtocol: -1
+            
+    # SecurityGroupALB:
+    #   Type: AWS::EC2::SecurityGroup
+    #   Properties:
+    #     GroupDescription: My Security Group for Express App on Fargate
+    #     VpcId: ${self:custom.vpc.defaultVpcId}
+    #     SecurityGroupIngress:
+    #       - CidrIp: 0.0.0.0/0
+    #         IpProtocol: HTTP
+    #         FromPort: 80
+    #         ToPort: 80
+
+    # Express-ALB:
+    #   Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    #   Properties:
+    #     Name: Express-ALB
+    #     SecurityGroup: !Ref SecurityGroupALB
+        
