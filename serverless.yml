@@ -7,8 +7,8 @@ custom:
   vpc:
     defaultVpcId: vpc-02babb95598ebd55b
     defaultSecurityGroup: sg-02f592e8908c5e3de
-    defaultSubnetId11: subnet-00958fd8a47071819
-    defaultSubnetId12: subnet-04e72b8e35800515c
+    defaultSubnetId1: subnet-00958fd8a47071819
+    defaultSubnetId2: subnet-04e72b8e35800515c
     defaultCidr: 172.31.16.0/20
 
 provider:
