@@ -79,16 +79,16 @@ resources:
             FromPort: 80
             ToPort: 80
 
-    Express-ALB:
+    ExpressALB:
       Type: AWS::ElasticLoadBalancingV2::LoadBalancer
       Properties:
-        Name: Express-ALB
+        Name: ExpressALB
         SecurityGroup: !Ref SecurityGroupALB
         Subnets:
           - ${self:custom.vpc.defaultSubnetId1}
           - ${self:custom.vpc.defaultSubnetId2}
     
-    ALB-Listener:
+    ALBListener:
       Type: AWS::ElasticLoadBalancingV2::Listener
       Properties:
         Protocol: HTTP
@@ -98,7 +98,7 @@ resources:
           - Type: forward
             TargetGroupArn: !Ref ALB-TargetGroup
 
-    ALB-TargetGroup:
+    ALBTargetGroup:
       Type: AWS::ElasticLoadBalancingV2::TargetGroup
       Properties:
         Port: 8080
