@@ -93,10 +93,10 @@ resources:
       Properties:
         Protocol: HTTP
         Port: 80
-        LoadBalancerArn: !Ref Express-ALB
+        LoadBalancerArn: !Ref ExpressALB
         DefaultActions:
           - Type: forward
-            TargetGroupArn: !Ref ALB-TargetGroup
+            TargetGroupArn: !Ref ALBTargetGroup
 
     ALBTargetGroup:
       Type: AWS::ElasticLoadBalancingV2::TargetGroup
