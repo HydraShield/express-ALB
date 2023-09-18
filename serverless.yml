@@ -7,7 +7,8 @@ custom:
   vpc:
     defaultVpcId: vpc-02babb95598ebd55b
     defaultSecurityGroup: sg-02f592e8908c5e3de
-    defaultSubnetId: subnet-00958fd8a47071819
+    defaultSubnetId11: subnet-00958fd8a47071819
+    defaultSubnetId12: subnet-04e72b8e35800515c
     defaultCidr: 172.31.16.0/20
 
 provider:
@@ -34,7 +35,7 @@ fargate:
     securityGroupIds:
       - Fn::GetAtt: [SecurityGroup0, GroupId]
     subnetIds:
-      - ${self:custom.vpc.defaultSubnetId}
+      - ${self:custom.vpc.defaultSubnetId1}
   tasks:
     express-ALB-fargate-task:
       name: express-ALB-fargate-task
@@ -45,7 +46,7 @@ fargate:
         securityGroupIds:
           - Fn::GetAtt: [SecurityGroup0, GroupId]
         subnetIds:
-          - ${self:custom.vpc.defaultSubnetId}
+          - ${self:custom.vpc.defaultSubnetId1}
         assignPublicIp: true
       service:
         desiredCount: 2
@@ -64,23 +65,45 @@ resources:
         GroupDescription: My Security Group for Express App on Fargate
         VpcId: ${self:custom.vpc.defaultVpcId}
         SecurityGroupIngress:
-          - CidrIp: 0.0.0.0/0
+          - SourceSecurityGroupId: !Ref SecurityGroupALB
             IpProtocol: -1
-            
-    # SecurityGroupALB:
-    #   Type: AWS::EC2::SecurityGroup
-    #   Properties:
-    #     GroupDescription: My Security Group for Express App on Fargate
-    #     VpcId: ${self:custom.vpc.defaultVpcId}
-    #     SecurityGroupIngress:
-    #       - CidrIp: 0.0.0.0/0
-    #         IpProtocol: HTTP
-    #         FromPort: 80
-    #         ToPort: 80
 
-    # Express-ALB:
-    #   Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-    #   Properties:
-    #     Name: Express-ALB
-    #     SecurityGroup: !Ref SecurityGroupALB
-        
+    SecurityGroupALB:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: My Security Group for Express App on Fargate
+        VpcId: ${self:custom.vpc.defaultVpcId}
+        SecurityGroupIngress:
+          - CidrIp: 0.0.0.0/0
+            IpProtocol: HTTP
+            FromPort: 80
+            ToPort: 80
+
+    Express-ALB:
+      Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+      Properties:
+        Name: Express-ALB
+        SecurityGroup: !Ref SecurityGroupALB
+        Subnets:
+          - ${self:custom.vpc.defaultSubnetId1}
+          - ${self:custom.vpc.defaultSubnetId2}
+    
+    ALB-Listener:
+      Type: AWS::ElasticLoadBalancingV2::Listener
+      Properties:
+        Protocol: HTTP
+        Port: 80
+        LoadBalancerArn: !Ref Express-ALB
+        DefaultActions:
+          - Type: forward
+            TargetGroupArn: !Ref ALB-TargetGroup
+
+    ALB-TargetGroup:
+      Type: AWS::ElasticLoadBalancingV2::TargetGroup
+      Properties:
+        Port: 8080
+        Protocol: HTTP
+        TargetType: ip
+        VpcId: ${self:custom.vpc.defaultVpcId}
+        Target:
+          - ${self:custom.vpc.defaultCidr}
