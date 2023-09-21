@@ -75,7 +75,7 @@ resources:
         VpcId: ${self:custom.vpc.defaultVpcId}
         SecurityGroupIngress:
           - CidrIp: 0.0.0.0/0
-            IpProtocol: HTTP
+            IpProtocol: TCP
             FromPort: 80
             ToPort: 80
 
@@ -102,7 +102,7 @@ resources:
       Type: AWS::ElasticLoadBalancingV2::TargetGroup
       Properties:
         Port: 8080
-        Protocol: HTTP1
+        Protocol: HTTP
         TargetType: ip
         VpcId: ${self:custom.vpc.defaultVpcId}
         Target:
