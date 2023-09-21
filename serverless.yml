@@ -53,6 +53,7 @@ fargate:
         maximumPercent: 200
         loadBalancers:
           - TargetGroupArn: !Ref ALBTargetGroup
+            ContainerPort: 8080
       cloudFormationResource:
         container:
           PortMappings:
