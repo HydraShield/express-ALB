@@ -51,6 +51,8 @@ fargate:
       service:
         desiredCount: 2
         maximumPercent: 200
+        loadBalancers:
+          - TargetGroupArn: !Ref ALBTargetGroup
       cloudFormationResource:
         container:
           PortMappings:
