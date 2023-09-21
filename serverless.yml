@@ -83,7 +83,8 @@ resources:
       Type: AWS::ElasticLoadBalancingV2::LoadBalancer
       Properties:
         Name: ExpressALB
-        SecurityGroup: !Ref SecurityGroupALB
+        SecurityGroups:
+          - !Ref SecurityGroupALB
         Subnets:
           - ${self:custom.vpc.defaultSubnetId1}
           - ${self:custom.vpc.defaultSubnetId2}
