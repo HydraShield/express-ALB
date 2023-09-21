@@ -106,4 +106,4 @@ resources:
         TargetType: ip
         VpcId: ${self:custom.vpc.defaultVpcId}
         Target:
-          - ${self:custom.vpc.defaultCidr}
+          - !Ref SecurityGroup0
