@@ -106,5 +106,3 @@ resources:
         Protocol: HTTP
         TargetType: ip
         VpcId: ${self:custom.vpc.defaultVpcId}
-        Target:
-          - !Ref SecurityGroup0
