@@ -49,11 +49,10 @@ fargate:
           - ${self:custom.vpc.defaultSubnetId1}
         assignPublicIp: true
       service:
-        serviceName: express-ALB-service
         desiredCount: 2
         maximumPercent: 200
         loadBalancers:
-          - ContainerName: express-ALB-service
+          - ContainerName: express-ALB-fargate-task
             ContainerPort: 8080
             TargetGroupArn: !Ref ALBTargetGroup   
       cloudFormationResource:
