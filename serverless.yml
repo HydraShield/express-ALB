@@ -50,16 +50,16 @@ fargate:
         assignPublicIp: true
       service:
         desiredCount: 2
-        maximumPercent: 200
-        loadBalancers:
-          - ContainerName: express-ALB-fargate-task
-            ContainerPort: 8080
-            TargetGroupArn: !Ref ALBTargetGroup   
+        maximumPercent: 200  
       cloudFormationResource:
         container:
           PortMappings:
             - ContainerPort: 8080
               HostPort: 8080
+        loadBalancers:
+          - ContainerName: express-ALB-fargate-task
+            ContainerPort: 8080
+            TargetGroupArn: !Ref ALBTargetGroup 
 
 resources:
   Resources:
