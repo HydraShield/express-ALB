@@ -105,3 +105,5 @@ resources:
           MinimumHealthyPercent: 100
         LoadBalancers:
           - TargetGroupArn: !Ref ALBTargetGroup
+            ContainerName: ExpressContainer
+            ContainerPort: 8080
