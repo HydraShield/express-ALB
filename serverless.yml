@@ -87,7 +87,6 @@ resources:
             Image: express-ALB
             PortMapping:
               - ContainerPort: 8080
-                HostPort: 8080
 
     ExpressService:
       Type: AWS::ECS::Service
