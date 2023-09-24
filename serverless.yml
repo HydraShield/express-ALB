@@ -85,6 +85,8 @@ resources:
         ContainerDefinitions:
           - Name: ExpressContainer
             Image: express-ALB
+            PortMappings:
+              ContainerPort: 8080
 
     ExpressService:
       Type: AWS::ECS::Service
