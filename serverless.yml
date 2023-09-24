@@ -90,6 +90,8 @@ resources:
 
     ExpressService:
       Type: AWS::ECS::Service
+      DependsOn:
+        - ALBListener
       Properties:
         Cluster: !Ref ExpressECSCluster
         TaskDefinition: !Ref ExpressTaskDefinition
@@ -109,4 +111,3 @@ resources:
           - TargetGroupArn: !Ref ALBTargetGroup
             ContainerName: ExpressContainer
             ContainerPort: 8080
-            LoadBalancerName: ExpressALB
