@@ -94,7 +94,7 @@ resources:
         LaunchType: FARGATE
         NetworkConfiguration:
           AwsvpcConfiguration:
-            AssignPublicIp: true
+            AssignPublicIp: ENABLED
             Subnets:
               - ${self:custom.vpc.defaultSubnetId1}
             SecurityGroups:
