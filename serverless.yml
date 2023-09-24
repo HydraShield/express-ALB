@@ -31,6 +31,7 @@ fargate:
   cpu: 256
   architecture: X86_64
   vpc:
+    assignPublicIp: true
     securityGroupIds:
       - Fn::GetAtt: [SecurityGroup0, GroupId]
     subnetIds:
