@@ -86,7 +86,7 @@ resources:
           - Name: ExpressContainer
             Image: express-ALB
             PortMapping:
-              - COntainerPort: 8080
+              - ContainerPort: 8080
                 HostPort: 8080
 
     ExpressService:
