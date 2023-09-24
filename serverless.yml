@@ -26,40 +26,30 @@ provider:
 
 fargate:
   clusterName: express-fargate-cluster
-  containerInsights: true
-  memory: '4 GB'
-  cpu: 2048
+  memory: 512
+  cpu: 256
   architecture: X86_64
   vpc:
-    assignPublicIp: true
     securityGroupIds:
       - Fn::GetAtt: [SecurityGroup0, GroupId]
     subnetIds:
       - ${self:custom.vpc.defaultSubnetId1}
-  tasks:
-    express-ALB-fargate-task:
-      name: express-ALB-fargate-task
-      image: express-ALB
-      memory: '2 GB'
-      cpu: 1024
-      vpc:
-        securityGroupIds:
-          - Fn::GetAtt: [SecurityGroup0, GroupId]
-        subnetIds:
-          - ${self:custom.vpc.defaultSubnetId1}
-        assignPublicIp: true
-      service:
-        desiredCount: 2
-        maximumPercent: 200  
-      cloudFormationResource:
-        container:
-          PortMappings:
-            - ContainerPort: 8080
-              HostPort: 8080
-        loadBalancers:
-          - ContainerName: express-ALB-fargate-task
-            ContainerPort: 8080
-            TargetGroupArn: !Ref ALBTargetGroup 
+  services:
+    express-ALB-fargate-service:
+      tasks:
+        express-ALB-fargate-task:
+          name: express-ALB-fargate-task
+          image: express-ALB
+          service:
+            desiredCount: 2
+            maximumPercent: 200  
+          cloudFormationResource:
+            container:
+              PortMappings:
+                - ContainerPort: 8080
+                  HostPort: 8080
+      loadBalancers:
+        - targetGroupArn: !Ref ALBTargetGroup
 
 resources:
   Resources:
