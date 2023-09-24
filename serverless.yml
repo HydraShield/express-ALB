@@ -1,8 +1,5 @@
 service: express-ALB
 
-plugins:
-  - serverless-fargate
-
 custom:
   vpc:
     defaultVpcId: vpc-02babb95598ebd55b
