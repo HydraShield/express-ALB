@@ -24,43 +24,6 @@ provider:
         path: ./app-express/
         file: Dockerfile
 
-fargate:
-  clusterName: express-fargate-cluster
-  containerInsights: true
-  memory: '4 GB'
-  cpu: 2048
-  architecture: X86_64
-  vpc:
-    assignPublicIp: true
-    securityGroupIds:
-      - Fn::GetAtt: [SecurityGroup0, GroupId]
-    subnetIds:
-      - ${self:custom.vpc.defaultSubnetId1}
-  tasks:
-    express-ALB-fargate-task:
-      name: express-ALB-fargate-task
-      image: express-ALB
-      memory: '2 GB'
-      cpu: 1024
-      vpc:
-        securityGroupIds:
-          - Fn::GetAtt: [SecurityGroup0, GroupId]
-        subnetIds:
-          - ${self:custom.vpc.defaultSubnetId1}
-        assignPublicIp: true
-      service:
-        desiredCount: 2
-        maximumPercent: 200  
-      cloudFormationResource:
-        container:
-          PortMappings:
-            - ContainerPort: 8080
-              HostPort: 8080
-        loadBalancers:
-          - ContainerName: express-ALB-fargate-task
-            ContainerPort: 8080
-            TargetGroupArn: !Ref ALBTargetGroup 
-
 resources:
   Resources:
     SecurityGroup0:
@@ -110,3 +73,41 @@ resources:
         Protocol: HTTP
         TargetType: ip
         VpcId: ${self:custom.vpc.defaultVpcId}
+
+    ExpressECSCluster:
+      Type: AWS::ECS::Cluster
+
+    ExpressTaskDefinition:
+      Type: AWS::ECS::TaskDefinition
+      Properties:
+        NetworkMode: awsvpc
+        RequiresCompatibilities: 
+          - FARGATE
+        Cpu: 256
+        Memory: 512
+        ContainerDefinitions:
+          - Name: ExpressContainer
+            Image: express-ALB
+            PortMapping:
+              - COntainerPort: 8080
+                HostPort: 8080
+
+    ExpressService:
+      Type: AWS::ECS::Service
+      Properties:
+        Cluster: !Ref ExpressECSCluster
+        TaskDefinition: !Ref ExpressTaskDefinition
+        LaunchType: FARGATE
+        NetworkConfiguration:
+          AwsvpcConfiguration:
+            AssignPublicIp: true
+            Subnets:
+              - ${self:custom.vpc.defaultSubnetId1}
+            SecurityGroups:
+              - !Ref SecurityGroup0
+        DesiredCount: 2
+        DeploymentConfiguration:
+          MaximumPercent: 200
+          MinimumHealthyPercent: 100
+        LoadBalancers:
+          - TargetGroupArn: !Ref ALBTargetGroup
