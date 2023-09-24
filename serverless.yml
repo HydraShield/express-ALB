@@ -26,6 +26,7 @@ provider:
 
 fargate:
   clusterName: express-fargate-cluster
+  containerInsights: true
   memory: 512
   cpu: 256
   architecture: X86_64
