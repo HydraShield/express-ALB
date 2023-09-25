@@ -48,10 +48,10 @@ fargate:
           PortMappings:
             - ContainerPort: 8080
               HostPort: 8080
-      loadBalancers:
-        - ContainerName: express-ALB-fargate-task
-          ContainerPort: 8080
-          TargetGroupArn: !Ref ALBTargetGroup 
+      # loadBalancers:
+      #   - ContainerName: express-ALB-fargate-task
+      #     ContainerPort: 8080
+      #     TargetGroupArn: !Ref ALBTargetGroup 
 
 resources:
   Resources:
