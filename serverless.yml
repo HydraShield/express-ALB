@@ -48,7 +48,7 @@ fargate:
           PortMappings:
             - ContainerPort: 8080
               HostPort: 8080
-  cloudFormationResources:
+  cloudFormationResource:
     service:
       LoadBalancers:
         - TargetGroupArn: !Ref ALBTargetGroup
